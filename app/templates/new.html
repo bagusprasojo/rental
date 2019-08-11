@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}
+Customer
+{% endblock %}
+
+{% block content %}
+
+      <h3>Input New Customer</h3>
+      <hr/>
+      
+      {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+            {{ message }}
+         </div>
+      {%- endfor %}
+      
+      <form action = "/new" method = "post">
+         <label for = "name">Name</label><br>
+         <input type = "text" name = "name" placeholder = "Name" value="{{ customer.name }}"/><br>
+         <label for = "email">City</label><br>
+         <input type = "text" name = "city" placeholder = "City" value="{{ customer.city }}"/><br>
+         <label for = "addr">Address</label><br>
+         <textarea name = "addr" placeholder = "Address"value="{{ customer.addr }}"></textarea><br>
+         <label for = "PIN">Post Code</label><br>
+         <input type = "text" name = "pin" placeholder = "Post Code" value="{{ customer.pin }}"/><br>
+         <input type = "submit" value = "Submit" />
+      </form>
+   {% endblock %}

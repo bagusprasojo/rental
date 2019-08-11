@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %}
+Customer
+{% endblock %}
+
+{% block content %}
+      <h3>
+         <a href = "{{ url_for('show_all') }}">List Of Customers</a>
+      </h3>
+      
+      <hr/>
+      {%- for message in get_flashed_messages() %}
+         {{ message }}
+      {%- endfor %}
+		
+      <h3>Customer (<a href = "{{ url_for('new') }}">Add Customer
+         </a>)</h3>
+      
+      <table border=1>
+         <thead>
+            <tr>
+               <th>Name</th>
+               <th>City</th>
+               <th>Address</th>
+               <th>Post Code</th>
+			   <th>Action</th>
+            </tr>
+         </thead>
+
+         <tbody>
+            {% for customer in customers %}
+               <tr>
+                  <td>{{ customer.name }}</td>
+                  <td>{{ customer.city }}</td>
+                  <td>{{ customer.addr }}</td>
+                  <td>{{ customer.pin }}</td>
+                  <td><a href = "{{ url_for('editcustomer') }}?id={{ customer.id }}">Edit</a>
+                    | <a href = "{{ url_for('new') }}?id={{ customer.id }}">Delete</a></td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   
+{% endblock %}
