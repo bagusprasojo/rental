@@ -19,6 +19,7 @@ Customer
       <table border=1>
          <thead>
             <tr>
+               <th>ID</th>
                <th>Name</th>
                <th>City</th>
                <th>Address</th>
@@ -30,6 +31,7 @@ Customer
          <tbody>
             {% for customer in customers %}
                <tr>
+                  <td>{{ customer.id }}</td>
                   <td>{{ customer.name }}</td>
                   <td>{{ customer.city }}</td>
                   <td>{{ customer.addr }}</td>

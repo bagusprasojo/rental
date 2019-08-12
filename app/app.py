@@ -20,6 +20,7 @@ class customers(db.Model):
 		self.city = city
 		self.addr = addr
 		self.pin = pin
+		self.id = 0
 
 @app.route('/')
 def home():
@@ -81,20 +82,39 @@ def new():
 					
 			return render_template('new.html', customer=customer)
 		else:
-			#customer = customers(request.form['name'], request.form['city'], request.form['addr'], request.form['pin'])
-		 
-			if customer.id == 0 :
-				db.session.edit(customer)
-			else :
-				db.session.add(customer)
+			customer = customers(request.form['name'], request.form['city'], request.form['addr'], request.form['pin'])
+			customer.id = request.form['id']
+						
+			if customer.id == '0' :
+				obj = db.session.query(customers).order_by(customers.id.desc()).first()
+				
+				if obj :
+					customer.id = obj.id + 1
+				else :
+					customer.id = 1
 
-			db.session.commit()
-			flash('Record was successfully added')
-			return redirect(url_for('show_all'))
+				db.session.add(customer)
+				db.session.commit()
+				flash('Record was successfully added')
+				return redirect(url_for('show_all'))
+			else :
+				obj=customers.query.filter_by(id=customer.id).first()
+				obj.addr 	= customer.addr
+				obj.name 	= customer.name
+				obj.city 	= customer.city
+				obj.pin 	= customer.pin
+
+				db.session.commit()
+
+				flash('Record was successfully Edited')
+				return redirect(url_for('show_all'))
+
+			
 			
 	
 	
 
 if __name__ == '__main__':
 	db.create_all()
-	app.run(debug = True)
+	#app.run(debug = True)
+	app.run(host="0.0.0.0",port=5000)

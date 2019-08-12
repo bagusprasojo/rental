@@ -5,7 +5,7 @@ Customer
 
 {% block content %}
 
-      <h3>Input New Customer</h3>
+      <h3>Input / Edit Customer</h3>
       <hr/>
       
       {%- for category, message in get_flashed_messages(with_categories = true) %}
@@ -15,7 +15,7 @@ Customer
       {%- endfor %}
       
       <form action = "/new" method = "post">
-         <input type = "hidden" name = "id" value="{{ customer.id }}"/><br>
+         <input type = "text" name = "id" value="{{ customer.id }}"/><br>
          <label for = "name">Name</label><br>
          <input type = "text" name = "name" placeholder = "Name" value="{{ customer.name }}"/><br>
          <label for = "email">City</label><br>
