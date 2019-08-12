@@ -1,6 +1,6 @@
 from flask import Flask, request, flash, url_for, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
-from forms import CustomerForm
+#from forms import CustomerForm
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///customers.sqlite3'
@@ -53,24 +53,35 @@ def editcustomer():
 def new():
 	if request.method == 'GET':
 		if request.args.get('id'):
-			
 			obj=customers.query.filter_by(id=request.args.get('id')).one()
-			db.session.delete(obj)
-			db.session.commit()
-			flash('Record was successfully deleted')
-			
-			
-			return redirect(url_for('show_all'))
+			#return request.args.get('isdelete')
+
+			if request.args.get('isdelete') == '1':					
+				db.session.delete(obj)
+				db.session.commit()
+				flash('Record was successfully deleted')
+				return redirect(url_for('show_all'))
+			else :
+				return render_template('new.html', customer = obj)			
 		else :			
 			return render_template('new.html', customer = customers('','','',''))
 	
 	
 	if request.method == 'POST':
+		customer = customers(request.form['name'], request.form['city'], request.form['addr'], request.form['pin'])
 		if not request.form['name'] or not request.form['city'] or not request.form['addr']:
-			flash('Please enter all the fields', 'error')
-			return render_template('new.html')
+			if not request.form['name']:
+				flash('Please enter Name', 'error')
+
+			if not request.form['city']:
+				flash('Please enter City', 'error')
+			
+			if not request.form['addr']:
+				flash('Please enter Address', 'error')
+					
+			return render_template('new.html', customer=customer)
 		else:
-			customer = customers(request.form['name'], request.form['city'], request.form['addr'], request.form['pin'])
+			#customer = customers(request.form['name'], request.form['city'], request.form['addr'], request.form['pin'])
 		 
 			if customer.id == 0 :
 				db.session.edit(customer)

@@ -34,8 +34,8 @@ Customer
                   <td>{{ customer.city }}</td>
                   <td>{{ customer.addr }}</td>
                   <td>{{ customer.pin }}</td>
-                  <td><a href = "{{ url_for('editcustomer') }}?id={{ customer.id }}">Edit</a>
-                    | <a href = "{{ url_for('new') }}?id={{ customer.id }}">Delete</a></td>
+                  <td><a href = "{{ url_for('new') }}?id={{ customer.id }}&isdelete=0">Edit</a>
+                    | <a href = "{{ url_for('new') }}?id={{ customer.id }}&isdelete=1">Delete</a></td>
                </tr>
             {% endfor %}
          </tbody>

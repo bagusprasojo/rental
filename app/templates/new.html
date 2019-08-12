@@ -15,12 +15,13 @@ Customer
       {%- endfor %}
       
       <form action = "/new" method = "post">
+         <input type = "hidden" name = "id" value="{{ customer.id }}"/><br>
          <label for = "name">Name</label><br>
          <input type = "text" name = "name" placeholder = "Name" value="{{ customer.name }}"/><br>
          <label for = "email">City</label><br>
          <input type = "text" name = "city" placeholder = "City" value="{{ customer.city }}"/><br>
          <label for = "addr">Address</label><br>
-         <textarea name = "addr" placeholder = "Address"value="{{ customer.addr }}"></textarea><br>
+         <textarea name = "addr" placeholder = "Address">{{ customer.addr }}</textarea><br>
          <label for = "PIN">Post Code</label><br>
          <input type = "text" name = "pin" placeholder = "Post Code" value="{{ customer.pin }}"/><br>
          <input type = "submit" value = "Submit" />
