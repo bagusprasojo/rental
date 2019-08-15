@@ -8,6 +8,16 @@ app.config['SECRET_KEY'] = "random string"
 
 db = SQLAlchemy(app)
 
+class products(db.Model):
+	id = db.Column('product_id', db.Integer, primary_key = True)
+	name = db.Column(db.String(100))
+	code = db.Column(db.String(15))	
+
+	def __init__(self, code, name):
+		self.name = name
+		self.code  = code
+		self.id = 0
+			
 class customers(db.Model):
 	id = db.Column('customer_id', db.Integer, primary_key = True)
 	name = db.Column(db.String(100))
@@ -30,11 +40,16 @@ def home():
 def about():
     return render_template("about.html")
 
-@app.route("/contact/")
-def contact():
-    return render_template("contact.html")
+@app.route("/product/")
+def show_all_product():
+	#return 'Ini Product'
+	return render_template("show_all_product.html")
 
-	
+@app.route("/new_product/")
+def new_product():
+	#return 'Ini Product'
+	return render_template("product.html")
+		
 @app.route('/customer/')
 def show_all():
 	return render_template('show_all.html', customers = customers.query.all() )
@@ -109,12 +124,7 @@ def new():
 				flash('Record was successfully Edited')
 				return redirect(url_for('show_all'))
 
-			
-			
-	
-	
-
 if __name__ == '__main__':
 	db.create_all()
-	#app.run(debug = True)
+	app.run(debug = True)
 	app.run(host="0.0.0.0",port=5000)
