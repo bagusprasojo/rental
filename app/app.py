@@ -45,10 +45,58 @@ def show_all_product():
 	#return 'Ini Product'
 	return render_template("show_all_product.html")
 
-@app.route("/new_product/")
-def new_product():
-	#return 'Ini Product'
-	return render_template("product.html")
+@app.route("/new_product/",  methods = ['GET', 'POST'])
+def new_product():	
+	if request.method == 'GET':
+		if request.args.get('id'):
+			obj=products.query.filter_by(id=request.args.get('id')).one()
+			
+			if request.args.get('isdelete') == '1':					
+				db.session.delete(obj)
+				db.session.commit()
+				flash('Record was successfully deleted')
+				return redirect(url_for('show_all_product'))
+			else :
+				return render_template('product.html', product = obj)			
+		else :			
+			return render_template('product.html', product = products('',''))
+	
+			
+	if request.method == 'POST':
+		product = products(request.form['code'], request.form['name'])
+		if not request.form['code'] or not request.form['name']:
+			if not request.form['Code']:
+				flash('Please enter Code', 'error')
+
+			if not request.form['name']:
+				flash('Please enter Name', 'error')
+								
+			return render_template('product.html', product = product)
+		else:
+			product = products(request.form['code'], request.form['name'])
+			product.id = request.form['id']
+						
+			if product.id == '0' :
+				obj = db.session.query(products).order_by(products.id.desc()).first()
+				
+				if obj :
+					product.id = obj.id + 1
+				else :
+						product.id = 1
+
+				db.session.add(product)
+				db.session.commit()
+				flash('Record was successfully added')
+				return redirect(url_for('show_all_product'))
+			else :
+				obj=products.query.filter_by(id=product.id).first()
+				obj.name 	= product.name
+				obj.ccode 	= product.code
+				
+				db.session.commit()
+
+				flash('Record was successfully Edited')
+				return redirect(url_for('show_all_product'))
 		
 @app.route('/customer/')
 def show_all():
